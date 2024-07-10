@@ -1,3 +1,6 @@
+# Content of this document was inspired by the great article
+# "The yaml document from hell" by Ruud van Asseldonk. Give it a read at
+# https://ruudvanasseldonk.com/2023/01/11/the-yaml-document-from-hell
 - name: The Document From Hell
   hosts: localhost
   vars:
