@@ -14,3 +14,9 @@ Historically, the Verifier has been a Python application shipped via Insights Cl
 - [rhc-worker-script](https://github.com/oamg/rhc-worker-script): Yggdrasil worker executing Python or Bash scripts from signed YAML files
 - [insights-client](https://github.com/RedHatInsights/insights-client): The wrapper around Insights Core
 - [insights-core](https://github.com/RedHatInsights/insights-core): The old Playbook verifier location (see `insights/client/apps/ansible/`)
+
+### Contributing
+
+This project is developed under the [MIT license](LICENSE).
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) to learn more about the contribution process, Conventional Commits and Developer Certificate of Origin.
