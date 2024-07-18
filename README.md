@@ -48,6 +48,14 @@ python3 -m coverage html
 
 </details>
 
+### Building
+
+The Python verifier can be built as an RPM package. The following command will build an `.noarch.rpm` in `rpm/` directory.
+
+```shell
+make rpm VERSION=1.0.0 BUILDROOT=fedora-40-x86_64
+```
+
 
 ## Contributing
 

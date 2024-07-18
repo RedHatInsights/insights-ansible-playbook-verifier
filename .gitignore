@@ -4,3 +4,5 @@ __pycache__/
 # Python testing
 .coverage
 htmlcov
+# RPM builds
+rpm/
