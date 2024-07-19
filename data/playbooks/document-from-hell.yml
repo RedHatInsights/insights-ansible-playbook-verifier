@@ -1,0 +1,58 @@
+- name: The Document From Hell
+  hosts: localhost
+  vars:
+    insights_signature_exclude: /hosts,/vars/insights_signature
+    insights_signature: !!binary |
+      TFMwdExTMUNSVWRKVGlCUVIxQWdVMGxIVGtGVVZWSkZMUzB0TFMwS1ZtVnljMmx2YmpvZ1IyNTFV
+      RWNnZGpFS0NtbFJTV05DUVVGQ1EwRkJSMEpSU20xdGIwRlFRVUZ2U2tWTmRuYzFPRVFyYWpWd1Rr
+      UnpZMUF2YVc1SlpXNTVNRUZ3UkVWR2VXMVJTRkExWlV4dlN6QUtZelEwSzBsSGNYbzBUeTl2UWpB
+      eFNUTlFWM1ZhTVc1cVpHVmtUR1UyTVhsTVZWWmllRlJGWTA0clkzVk5lRFphVUdweU55OXJaRmMy
+      TXpsSlpYcGtMd3A1TUdaelRtRkdTSHBHU0RadlVTOHdkMlZtTXpsVlVsRTRibkZEUm1vMVdGRnJO
+      bW8zTVhkRGVWcHBRekYyWTNsVU1tOXlaUzl4YmpKclltcFFlWGxJQ2pObWVVeDNSbTl0ZW05UE1I
+      SllNMUJCUVdsdmNUUjFaVzFNT1d4alFrMUZZVEZpT0hBMWJYaEhhakJEV0hsMWJUZDNLemhOTkV0
+      M1JsQXpjMk5LVXpRS1ZuZFNaM2RoY1VoVWNqSk1WRkZMYURSNVZXbExkVUpqV1ZjM1VXWlVRMU51
+      WkVGdmFEaEVhM0ZIZFdSbFQwWnZObmhXY1hwd1lsQjRhbUo0YjI0emVncEpWVWR3Y2xwTlVsbE9X
+      bkprWlRFd1MxSnlVMnBXTnpaSllrWXJObmR1V2t0cVRIY3ZUWEZTUkd0T1QzRnZjVU5GU20xR2RU
+      RnNhRU5XTWk5R09WTTNDbTlqT0VZMU1uRkVXbnBxUjFwVVlsTldOV1Z6WlhwNU5HcFJWRmxTUkdk
+      MWVuZHFRblpMTlUwMFRUSXZTbTlMV1dsVWVsTnJXWEZtUmpOTlUwSXhRWFVLVlZkWU1IRnhlRWg0
+      VVVGTWMyUjZkWHAxVGpGa1IyUktSV1lyU1VKVlVtVlFVelpOTm5oYVQxSkdhbU01YTJaVWJGSnpV
+      azgwUm5ReFMyeGtNR3BsVWdwNVEyRkdTa2xXUWpWTGF5OUZhVUpqVjBOelIyaE5XaXQxV1VadFVF
+      RlhSRXhaYkRoeFJubFdWRTlQU0RoVVQzVXpSbUo0YTBsbVZHMUhTVUpyT1ZoWkNuYzFlbEZuZFZJ
+      M2EwYzNNbVJaZUU1NVVrRjNPV2hqVkhGRU0yNTRMMFZsZDJZNFZqQjFVRTR6Wm1JMFZFd3llR3R4
+      VGpaaVZuQlJiR3Q1UmpkUE5qUUtSVGs1VlZkcFRWWlRTVFJqWWxSRFoyeHBkemxQZFVJMlJHMVlX
+      bTE1YWtoUVNpdFBlR1pHT1d4dFNGVklTM0ZYU25WUFdGRXhWVFZKWlZGelVFNUpOQXAwVDNWT2N6
+      UkxhRXM1TTA5TmNFRndiMGd4UndvOVJtcEtkUW90TFMwdExVVk9SQ0JRUjFBZ1UwbEhUa0ZVVlZK
+      RkxTMHRMUzBL
+
+
+    ports: # '22:22' may be 1342 in base-60
+      - 22:22
+      - 80:80
+      - 443:443
+    regions: # 'no' may parse as boolean
+      - is
+      - no
+      - se
+    flush_cache: # 'on' may parse as boolean
+      on: [push, memory_pressure]
+    allow_postgres_versions: # second two may be floats instead of strings
+      - 9.5.25
+      - 9.6.24
+      - 10.23
+      - 12.13
+    ways_to_say_true: # https://yaml.org/type/bool.html
+      - y
+      - Y
+      - yes
+      - Yes
+      - YES
+      - true
+      - true
+      - true
+      - on
+      - On
+      - ON
+
+  tasks:
+    - ansible.builtin.debug:
+        message: What a mess.
