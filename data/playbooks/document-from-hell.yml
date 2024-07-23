@@ -24,7 +24,6 @@
       OXpUM2N5YVV4cE5uQTVkRlJyVGdvOVowZzRPUW90TFMwdExVVk9SQ0JRUjFBZ1UwbEhUa0ZVVlZK
       RkxTMHRMUzBL
 
-
     ports: # '22:22' may be 1342 in base-60
       - 22:22
       - 80:80
@@ -47,8 +46,8 @@
       - Yes
       - YES
       - true
-      - true
-      - true
+      - True
+      - TRUE
       - on
       - On
       - ON

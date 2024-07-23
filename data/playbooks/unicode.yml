@@ -28,7 +28,7 @@
     - name: Not all languages are as boring as English /s
       ansible.builtin.find:
         paths:
-      # I'm mostly just copying stuff off Wikipedia
+          # I'm mostly just copying stuff off Wikipedia
           - /tříštivá/hrušeň
           - /ご飯が熱い。/彼は変だ。
           - /电脑/汉堡包
