@@ -1,5 +1,21 @@
 # Contributing to Insights Ansible playbook verifier
 
+## Security
+
+Since we are dealing with PGP, you should ensure you aren't including private key material in your commits. We recommend you to install `gitleaks` package and add it to pre-commit or pre-push script. For example:
+
+```bash
+#!/bin/bash
+set -euo pipefail
+
+gitleaks detect --verbose
+make check
+make test
+make integration
+```
+
+Our `gitleaks` configuration explicitly ignores `python/tests-unit/test_crypto.py` that includes dummy private key we use to run tests of the `crypto` module; be extra careful when changing this file.
+
 ## Conventional Commits
 
 When making a contribution, follow the [Conventional Commits](https://www.conventionalcommits.org) guidelines.
