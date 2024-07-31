@@ -15,7 +15,41 @@ Historically, the Verifier has been a Python application shipped via Insights Cl
 - [insights-client](https://github.com/RedHatInsights/insights-client): The wrapper around Insights Core
 - [insights-core](https://github.com/RedHatInsights/insights-core): The old Playbook verifier location (see `insights/client/apps/ansible/`)
 
-### Contributing
+
+## Development
+
+### Running
+
+```shell
+# python
+python3 -m pip install -e .[dev]
+cat data/playbooks/... | insights-ansible-playbook-verifier
+```
+
+### Testing
+
+```shell
+# python
+make check-py
+make test-py
+make integration-py
+```
+
+<details>
+
+<summary>More testing tips</summary>
+
+```shell
+# python coverage
+PYTHONPATH=python/ python3 -m coverage run -m pytest python/tests-unit/
+python3 -m coverage report
+python3 -m coverage html
+```
+
+</details>
+
+
+## Contributing
 
 This project is developed under the [MIT license](LICENSE).
 

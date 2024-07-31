@@ -1,0 +1,6 @@
+# Python runtime
+__pycache__/
+*.egg-info/
+# Python testing
+.coverage
+htmlcov
