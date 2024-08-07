@@ -17,7 +17,9 @@ This document describes the exact format required by the Ansible playbook verifi
         msg: The signed playbook says hello!
 ```
 
-In case there are multiple plays present in the playbook file, all of them MUST be verified. Validation issue in any of them MUST result in a failure.
+A playbook contains at least one play; the lack of any play MUST result in a failure.
+
+All the plays present in the playbook MUST be verified. Validation issue in any of them MUST result in a failure.
 
 ## Booleans
 
@@ -137,7 +139,7 @@ Before the hash is computed and checked against its GPG signature, the playbook 
 
 ## Variable cleanup
 
-Each playbook MUST define the variable `/vars/insights_signature_exclude` that describes which fields may be excluded.
+Each playbook MUST define the variable `/vars/insights_signature_exclude` that describes which fields may be excluded, and the `/vars/insights_signature` variable that contains the GPG signature.
 
 The only top-level keys that MAY be excluded are `/hosts` and `/vars`, exclusion of any other top-level key MUST result in a failure.
 
@@ -189,6 +191,19 @@ For historical reasons, the serialization format is dictated by `ruamel.yaml`'s 
 Map has to be serialized into `ordereddict([...])`, where its keys and values serialize into list of key-value tuples (`('key', 'value')`).
 
 Booleans are only serialized into `True`/`False` if they have been declared as `true`/`false`; string `yes` is kept as string value `'yes'` and so on.
+
+Strings are quoted when serialized; the type of quoting depends on which quote characters (single and double) are present in a string:
+- a string with no quote characters: it is quoted with single quotes
+- a string with only single quote characters: it is quoted with double quotes, and the single quote characters are left untouched
+- a string with only double quote characters: it is quoted with single quotes, and the double quote characters are left untouched
+- a string with both single quote and double quote characters: it is quoted with single quotes, the single quote characters are `\`-escaped (`\'`), and the double quote characters are left untouched
+
+| string | serialization |
+-------- | ------------- |
+| `no quote` | `'no quote'` |
+| `single'quote` | `"single'quote"` |
+| `double"quote` | `'double"quote'` |
+| `both"'quotes` | `'both"\'quotes'` |
 
 <details>
 
