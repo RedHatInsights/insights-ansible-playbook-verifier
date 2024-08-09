@@ -19,3 +19,9 @@ jobs:
     targets:
       - centos-stream-10
       - fedora-all
+
+  - job: tests
+    trigger: pull_request
+    targets:
+      - centos-stream-10
+      - fedora-all
