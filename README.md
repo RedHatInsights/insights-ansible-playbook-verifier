@@ -53,6 +53,8 @@ python3 -m coverage html
 The Python verifier can be built as an RPM package. The following command will build an `.noarch.rpm` in `rpm/` directory.
 
 ```shell
+dnf install -y epel-release  # CentOS Stream, RHEL
+dnf install -y rpmdevtools mock
 make rpm VERSION=1.0.0 BUILDROOT=fedora-40-x86_64
 ```
 

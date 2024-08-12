@@ -1,5 +1,5 @@
 VERSION?=0.0.0
-BUILDROOT?=fedora-40-x86_64
+BUILDROOT?=/etc/mock/default.cfg
 
 .PHONY: build
 build: build-py
