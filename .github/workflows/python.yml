@@ -3,7 +3,10 @@ name: Python
 on:
   pull_request:
     paths:
-      - "python/"
+      - "data/**"
+      - "python/**"
+      - "pyproject.toml"
+      - "Makefile"
 
 jobs:
   main:
@@ -30,7 +33,7 @@ jobs:
 
       - name: "Install dependencies"
         run: |
-          dnf --setopt install_weak_deps=False install -y python3-pip gpg
+          dnf --setopt install_weak_deps=False install -y python3-pip gpg make
           python3 -m pip install --upgrade pip wheel
           python3 -m pip install .[dev]
 
