@@ -100,6 +100,7 @@ def _initialize_gpg_environment(home):
         ["/usr/bin/gpg", "--homedir", home, "--import", public_key],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env={"LC_ALL": "UTF-8"},
     )
     process.communicate()
     assert process.returncode == 0
@@ -112,6 +113,7 @@ def _initialize_gpg_environment(home):
         ["/usr/bin/gpg", "--homedir", home, "--import", private_key],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env={"LC_ALL": "UTF-8"},
     )
     process.communicate()
     assert process.returncode == 0
@@ -124,6 +126,7 @@ def _initialize_gpg_environment(home):
         ["/usr/bin/gpg", "--homedir", home, "--detach-sign", "--armor", file],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        env={"LC_ALL": "UTF-8"},
     )
     process.communicate()
     assert process.returncode == 0

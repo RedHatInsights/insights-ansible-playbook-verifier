@@ -1,3 +1,4 @@
+import os
 import pathlib
 import subprocess
 import sys
@@ -38,6 +39,7 @@ def test_official_playbook(filename: str):
         stderr=subprocess.PIPE,
         universal_newlines=True,
         check=False,
+        env={**os.environ, "LC_ALL": "UTF-8"},
     )
 
     # The playbooks may and may not include newline as EOF.
