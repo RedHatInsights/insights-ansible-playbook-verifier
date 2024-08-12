@@ -94,7 +94,7 @@ class GPGCommand:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
-            env={"GNUPGHOME": self._home},  # type: ignore
+            env={"GNUPGHOME": self._home, "LC_ALL": "C.UTF-8"},  # type: ignore
         )
         stdout, stderr = version_process.communicate()
         if version_process.returncode != 0:
@@ -149,7 +149,7 @@ class GPGCommand:
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             universal_newlines=True,
-            env={"GNUPGHOME": self._home},  # type: ignore
+            env={"GNUPGHOME": self._home, "LC_ALL": "C.UTF-8"},  # type: ignore
         )
         _, stderr = shutdown_process.communicate()
         if shutdown_process.returncode != 0:
@@ -194,6 +194,7 @@ class GPGCommand:
             self._raw_command,  # type: ignore
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            env={"LC_ALL": "C.UTF-8"},
         )
         stdout, stderr = process.communicate()
 
