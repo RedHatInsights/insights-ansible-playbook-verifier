@@ -3,6 +3,7 @@ import copy
 import dataclasses
 import hashlib
 import logging
+import os
 import pathlib
 import sys
 import tempfile
@@ -17,6 +18,15 @@ logger = logging.getLogger(__name__)
 
 
 VARIABLE_FIELDS: list[str] = ["hosts", "vars"]
+
+
+# Try to use the special /var/lib/ directory.
+if os.geteuid() == 0 and os.path.isdir("/var/lib/insights-ansible-playbook-verifier/"):
+    TEMPORARY_STASH_DIRECTORY = "/var/lib/insights-ansible-playbook-verifier/"
+    TEMPORARY_STASH_DIRECTORY_PREFIX = "files-"
+else:
+    TEMPORARY_STASH_DIRECTORY = "/tmp/"
+    TEMPORARY_STASH_DIRECTORY_PREFIX = "insights-ansible-playbook-verifier-files-"
 
 
 def _configure_logging(debug: bool = False) -> None:
@@ -140,7 +150,8 @@ def verify_play(play: dict, gpg_key: bytes) -> bytes:
     signature: bytes = base64.b64decode(b64_signature)
 
     with tempfile.TemporaryDirectory(
-        prefix="insights-ansible-playbook-verifier-"
+        dir=TEMPORARY_STASH_DIRECTORY,
+        prefix=TEMPORARY_STASH_DIRECTORY_PREFIX,
     ) as temp_dir:
         temp_path = pathlib.Path(temp_dir)
 
