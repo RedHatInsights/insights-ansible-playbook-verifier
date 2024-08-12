@@ -1,6 +1,8 @@
 # Python runtime
 __pycache__/
 *.egg-info/
+# Python builds
+build/
 # Python testing
 .coverage
 htmlcov
