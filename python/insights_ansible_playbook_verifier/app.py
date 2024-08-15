@@ -95,18 +95,20 @@ def run() -> None:
     plays: list[dict] = lib.parse_playbook(raw_playbook)
     if not plays:
         raise lib.PreconditionError("Playbook contains no plays.")
-    logger.debug(f"Playbook contains {len(plays)} plays.")
+    logger.debug(f"Playbook contains {len(plays)} play(s).")
 
     # Verify plays
-    for play in plays:
+    for i, play in enumerate(plays, 1):
         play_name: str = play.get("name", "???")
         digest: bytes = lib.verify_play(play, gpg_key=gpg_key)
         if digest in digests:
             raise RuntimeError(
                 f"Play '{play_name}'s digest is on revocation list: '{digest!s}'."
             )
+        else:
+            logger.debug(f"Play {i}/{len(plays)} ('{play_name}'): OK.")
 
-    logger.info("OK.")
+    logger.info("All plays are OK.")
     print(raw_playbook)
 
 
