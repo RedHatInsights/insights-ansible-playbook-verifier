@@ -152,7 +152,9 @@ class GPGCommand:
             env={"GNUPGHOME": self._home, "LC_ALL": "C.UTF-8"},  # type: ignore
         )
         _, stderr = shutdown_process.communicate()
-        if shutdown_process.returncode != 0:
+        if shutdown_process.returncode == 0:
+            logger.debug("Killed GPG agent.")
+        else:
             stderr = "\n".join(
                 "stderr: {line}".format(line=line)
                 for line in stderr.split("\n")
@@ -175,6 +177,7 @@ class GPGCommand:
         for _ in range(5):
             try:
                 shutil.rmtree(self._home)  # type: ignore
+                logger.debug("Deleted temporary directory.")
                 break
             except OSError as exc:
                 if exc.errno == errno.ENOENT:
@@ -224,7 +227,6 @@ class GPGCommand:
                 logger.debug("GPG setup failed.")
                 return setup_result
 
-            logger.debug("Running GPG in the temporary environment.")
             return self._run(self.command)
         finally:
             self._cleanup()
@@ -256,7 +258,7 @@ def verify_gpg_signed_file(
 
     gpg = GPGCommand(command=["--verify", f"{signature!s}", f"{file!s}"], key=key)
 
-    logger.debug(f"Starting gpg verification process for '{file}'.")
+    logger.debug(f"Starting GPG verification process for '{file}'.")
     result: GPGCommandResult = gpg.evaluate()
 
     if result.ok:

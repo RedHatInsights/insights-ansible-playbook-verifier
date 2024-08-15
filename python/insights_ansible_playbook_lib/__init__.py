@@ -121,7 +121,7 @@ def clean_play(play: dict) -> dict:
 
 def create_play_digest(play: bytes) -> bytes:
     """Hash the play using SHA256."""
-    logger.info("Creating play digest.")
+    logger.debug("Creating play digest.")
 
     sha = hashlib.sha256()
     sha.update(play)
