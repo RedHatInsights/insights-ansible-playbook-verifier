@@ -11,6 +11,7 @@ Source0:  %{name}-%{version}.tar.gz
 BuildArch: noarch
 
 BuildRequires: python3-devel
+Requires: gpg
 %generate_buildrequires
 %pyproject_buildrequires
 
