@@ -30,6 +30,7 @@ package-dir = {"" = "python"}
 packages = [
     "insights_ansible_playbook_lib",
     "insights_ansible_playbook_verifier",
+    "insights_ansible_playbook_signer",
 ]
 
 [project.optional-dependencies]
@@ -37,10 +38,11 @@ dev = ["pytest", "ruff", "mypy", "types-PyYAML"]
 
 [project.scripts]
 insights-ansible-playbook-verifier = "insights_ansible_playbook_verifier.app:main"
+insights-ansible-playbook-signer = "insights_ansible_playbook_signer.app:main"
 
 [tool.mypy]
 mypy_path = "python/"
-packages = "insights_ansible_playbook_lib,insights_ansible_playbook_verifier"
+packages = "insights_ansible_playbook_lib,insights_ansible_playbook_verifier,insights_ansible_playbook_signer"
 
 disallow_any_unimported = true
 
