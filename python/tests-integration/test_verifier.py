@@ -37,9 +37,9 @@ def test_official_playbook(filename: str):
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
-        universal_newlines=True,
+        text=True,
         check=False,
-        env={**os.environ, "LC_ALL": "UTF-8"},
+        env={**os.environ, "LC_ALL": "C.UTF-8"},
     )
 
     # The playbooks may and may not include newline as EOF.
