@@ -146,6 +146,7 @@ def verify_play(play: dict, gpg_key: bytes) -> bytes:
 
     cleaned_play: dict = clean_play(play)
     serialized_play: bytes = serialize_play(cleaned_play).encode("utf-8")
+    logger.debug(f"Serialized play as {serialized_play!r}")
     digest: bytes = create_play_digest(serialized_play)
     signature: bytes = base64.b64decode(b64_signature)
 
