@@ -14,7 +14,6 @@ make test
 make integration
 ```
 
-Our `gitleaks` configuration explicitly ignores `python/tests-unit/test_crypto.py` that includes dummy private key we use to run tests of the `crypto` module; be extra careful when changing this file.
 
 ## Conventional Commits
 
