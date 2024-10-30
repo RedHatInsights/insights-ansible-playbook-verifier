@@ -14,14 +14,14 @@ __all__ = ["Loader", "serialize_play"]
 
 class CustomSafeConstructor(yaml.constructor.SafeConstructor):
     def construct_yaml_bool(self, node: "yaml.ScalarNode"):  # type: ignore
-        value: str = self.construct_scalar(node)  # type: ignore
-        if value.lower() not in ("true", "false"):
+        value = self.construct_scalar(node)
+        if str(value).lower() not in ("true", "false"):
             return value
         return super().construct_yaml_bool(node)
 
     def construct_yaml_int(self, node: "yaml.ScalarNode"):  # type: ignore
-        value: str = self.construct_scalar(node)  # type: ignore
-        if ":" not in value:
+        value = self.construct_scalar(node)
+        if ":" not in str(value):
             return super().construct_yaml_int(node)
         return value
 
