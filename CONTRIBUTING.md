@@ -8,7 +8,7 @@ Since we are dealing with PGP, you should ensure you aren't including private ke
 #!/bin/bash
 set -euo pipefail
 
-gitleaks detect --verbose
+gitleaks git --verbose
 make check
 make test
 make integration

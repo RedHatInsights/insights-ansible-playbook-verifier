@@ -32,7 +32,7 @@ integration-py:
 
 .PHONY: check
 check: check-py
-	gitleaks detect --verbose
+	gitleaks git --verbose
 
 .PHONY: check-py
 check-py:

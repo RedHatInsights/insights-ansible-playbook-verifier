@@ -3,3 +3,10 @@ useDefault = true
 
 [allowlist]
 description = "Repository-specific configuration"
+
+commits = [
+    # Includes private GPG key in python/tests-unit/test_crypto.py
+    # Introduced: 2024-07-31; feat: Add Python implementation
+    # Solved: 2024-10-30; feat: Create GPG key pair on-demand
+    "91d32c3bee28de3864a02ee294479c574451b86d",
+]
