@@ -1,0 +1,23 @@
+name: Source code
+
+on:
+  pull_request:
+
+jobs:
+  gitleaks:
+    runs-on: "ubuntu-latest"
+    container:
+      image: "registry.fedoraproject.org/fedora:latest"
+
+    steps:
+      - name: "Install packages"
+        run: |
+          dnf --setopt install_weak_deps=False install -y git-core gitleaks
+          git config --global --add safe.directory '*'
+
+      - name: "Checkout the repository"
+        uses: actions/checkout@v4
+
+      - name: "Run gitleaks"
+        run: |
+          gitleaks git --verbose
