@@ -11,7 +11,7 @@ build-py:
 	@echo "Building Python package" && \
 	cp data/public.gpg python/insights_ansible_playbook_verifier/data/public.gpg
 	cp data/revoked_playbooks.yml python/insights_ansible_playbook_verifier/data/revoked_playbooks.yml
-	sed -i "s|version = .*|version = '$(VERSION)'|" pyproject.toml
+	sed -i "s|version = .*|version = $(VERSION)|" setup.cfg
 
 
 .PHONY: test
