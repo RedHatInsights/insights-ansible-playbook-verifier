@@ -5,7 +5,8 @@ on:
     paths:
       - "data/**"
       - "python/**"
-      - "pyproject.toml"
+      - "setup.cfg"
+      - "setup.py"
       - "Makefile"
 
 jobs:
