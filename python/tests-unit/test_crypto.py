@@ -1,5 +1,6 @@
 import os.path
 import pathlib
+import pytest
 import shutil
 import subprocess
 import tempfile
@@ -129,3 +130,140 @@ def test_invalid_signature():
     assert 1 == result.return_code
 
     assert not os.path.isfile(result._command._home)
+
+
+@mock.patch(
+    "insights_ansible_playbook_lib.crypto.TEMPORARY_GPG_HOME_PARENT_DIRECTORY",
+    "/tmp/",
+)
+@mock.patch("subprocess.Popen")
+@mock.patch.object(crypto.GPGCommand, "_cleanup", return_value=None)
+def test_invalid_gpg_setup(
+    mock_cleanup: mock.MagicMock,
+    mock_popen: mock.MagicMock,
+):
+    """An invalid GPG setup can be detected."""
+    gpg_command = crypto.GPGCommand(command=[], key=pathlib.Path("/dummy/key"))
+
+    # Mock the process
+    mock_process = mock.Mock()
+    mock_process.communicate.return_value = (b"", b"GPG setup failed")
+    mock_process.returncode = 1
+    mock_popen.return_value = mock_process
+
+    # Run the test
+    result: crypto.GPGCommandResult = gpg_command.evaluate()
+
+    # Verify results
+    assert not result.ok
+    assert "" == result.stdout
+    assert "GPG setup failed" in result.stderr
+    assert 1 == result.return_code
+
+
+@mock.patch(
+    "insights_ansible_playbook_lib.crypto.TEMPORARY_GPG_HOME_PARENT_DIRECTORY",
+    "/tmp/",
+)
+def test_missing_public_key():
+    """A missing public key can be detected."""
+    home = tempfile.mkdtemp()
+    _initialize_gpg_environment(home)
+
+    # Remove the public key
+    os.remove(home + "/key.public.gpg")
+
+    # Run the test
+    result: crypto.GPGCommandResult = crypto.verify_gpg_signed_file(
+        file=pathlib.Path(home) / "file.txt",
+        signature=pathlib.Path(home) / "file.txt.asc",
+        key=pathlib.Path(home) / "key.public.gpg",
+    )
+    shutil.rmtree(home)
+
+    # Verify results
+    assert not result.ok
+    assert "" == result.stdout
+    assert (
+        f"gpg: can't open '{home}/key.public.gpg': No such file or directory"
+        in result.stderr
+    )
+    assert 2 == result.return_code
+
+
+@mock.patch(
+    "insights_ansible_playbook_lib.crypto.TEMPORARY_GPG_HOME_PARENT_DIRECTORY",
+    "/tmp/",
+)
+def test_invalid_public_key():
+    """An invalid public key can be detected."""
+    home = tempfile.mkdtemp()
+    _initialize_gpg_environment(home)
+
+    # Change the contents of the public key
+    with open(home + "/key.public.gpg", "w") as f:
+        f.write("invalid key")
+
+    # Run the test
+    result: crypto.GPGCommandResult = crypto.verify_gpg_signed_file(
+        file=pathlib.Path(home) / "file.txt",
+        signature=pathlib.Path(home) / "file.txt.asc",
+        key=pathlib.Path(home) / "key.public.gpg",
+    )
+    shutil.rmtree(home)
+
+    # Verify results
+    assert not result.ok
+    assert "" == result.stdout
+    assert "gpg: no valid OpenPGP data found" in result.stderr
+    assert 2 == result.return_code
+
+
+@mock.patch(
+    "insights_ansible_playbook_lib.crypto.TEMPORARY_GPG_HOME_PARENT_DIRECTORY",
+    "/tmp/",
+)
+def test_missing_signed_file():
+    """A missing signed file can be detected."""
+    home = tempfile.mktemp()
+
+    # Run the test
+    with pytest.raises(FileNotFoundError) as excinfo:
+        crypto.verify_gpg_signed_file(
+            file=pathlib.Path(home) / "file.txt",
+            signature=pathlib.Path(home) / "file.txt.asc",
+            key=pathlib.Path(home) / "key.public.gpg",
+        )
+
+    # Verify results
+    assert "FileNotFoundError" in str(excinfo)
+    assert not os.path.isfile(pathlib.Path(home) / "file.txt")
+    assert not os.path.isdir(pathlib.Path(home))
+
+
+@mock.patch(
+    "insights_ansible_playbook_lib.crypto.TEMPORARY_GPG_HOME_PARENT_DIRECTORY",
+    "/tmp/",
+)
+def test_missing_signature_file():
+    """A missing signature file can be detected."""
+    home = tempfile.mkdtemp()
+    _initialize_gpg_environment(home)
+
+    # Remove the signature file
+    os.remove(home + "/file.txt.asc")
+
+    # Run the test
+    with pytest.raises(FileNotFoundError) as excinfo:
+        crypto.verify_gpg_signed_file(
+            file=pathlib.Path(home) / "file.txt",
+            signature=pathlib.Path(home) / "file.txt.asc",
+            key=pathlib.Path(home) / "key.public.gpg",
+        )
+
+    # Verify results
+    assert "FileNotFoundError" in str(excinfo)
+    assert os.path.isfile(pathlib.Path(home) / "file.txt")
+    assert not os.path.isfile(pathlib.Path(home) / "file.txt.asc")
+
+    shutil.rmtree(home)
