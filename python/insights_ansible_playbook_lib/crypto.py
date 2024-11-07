@@ -223,7 +223,7 @@ class GPGCommand:
         """
         try:
             setup_result = self._setup()
-            if not setup_result:
+            if not setup_result.ok:
                 logger.debug("GPG setup failed.")
                 return setup_result
 
