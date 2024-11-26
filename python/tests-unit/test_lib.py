@@ -151,7 +151,7 @@ class TestCleanPlaybook:
             lib.clean_play(raw)
 
 
-class TestPlaybookDigest:
+class TestCreatePlayDigest:
     @pytest.mark.parametrize("file", ("insights_remove", "document-from-hell"))
     def test_ok(self, file: str):
         raw: bytes = (PLAYBOOKS / f"{file}.serialized.bin").read_bytes()
