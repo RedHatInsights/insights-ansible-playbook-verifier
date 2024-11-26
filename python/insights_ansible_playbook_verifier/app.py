@@ -81,7 +81,7 @@ def run() -> None:
     logger.debug("Revocation digests obtained, can proceed to verification.")
 
     # Load playbook with plays to verify
-    raw_playbook: str = ""
+    raw_playbook: str
     if args.stdin:
         with contextlib.suppress(KeyboardInterrupt):
             raw_playbook = sys.stdin.read()
@@ -103,7 +103,7 @@ def run() -> None:
         digest: bytes = lib.verify_play(play, gpg_key=gpg_key)
         if digest in digests:
             raise RuntimeError(
-                f"Play '{play_name}'s digest is on revocation list: '{digest!s}'."
+                f"Digest of play '{play_name}' is on revocation list: '{bytearray(digest).hex()}'."
             )
         else:
             logger.debug(f"Play {i}/{len(plays)} ('{play_name}'): OK.")

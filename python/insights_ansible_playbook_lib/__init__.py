@@ -172,7 +172,7 @@ def verify_play(play: dict, gpg_key: bytes) -> bytes:
                 f"Play content failed to match its digest's signature: {serialized_play!r}."
             )
             raise GPGValidationError(
-                "Play digest does not match its signature",
+                "Play digest does not match its signature.",
                 serialized_play=serialized_play,
                 digest=digest,
                 signature=signature,

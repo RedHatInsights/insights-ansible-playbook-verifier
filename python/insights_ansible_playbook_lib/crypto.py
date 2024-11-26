@@ -256,7 +256,7 @@ def verify_gpg_signed_file(
             f"Signature '{signature!s}' of file '{file!s}' not found."
         )
 
-    gpg = GPGCommand(command=["--verify", f"{signature!s}", f"{file!s}"], key=key)
+    gpg = GPGCommand(command=["--verify", str(signature), str(file)], key=key)
 
     logger.debug(f"Starting GPG verification process for '{file}'.")
     result: GPGCommandResult = gpg.evaluate()
