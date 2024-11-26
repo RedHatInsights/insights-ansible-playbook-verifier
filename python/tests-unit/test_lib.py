@@ -87,24 +87,6 @@ class TestCleanPlaybook:
         actual: dict = lib.clean_play(raw)
         assert actual == expected
 
-    def test_requires_vars(self):
-        raw = {"name": "bad playbook", "tasks": [{"name": "a task"}]}
-
-        with pytest.raises(
-            lib.PreconditionError,
-            match="does not have the key 'vars",
-        ):
-            lib.clean_play(raw)
-
-    def test_requires_signature_exclude(self):
-        raw = {"name": "bad playbook", "vars": {}, "tasks": [{"name": "a task"}]}
-
-        with pytest.raises(
-            lib.PreconditionError,
-            match="does not have the key 'vars/insights_signature_exclude'",
-        ):
-            lib.clean_play(raw)
-
     def test_too_shallow_exclude(self):
         raw = {"vars": {"insights_signature_exclude": "/"}}
 
@@ -160,6 +142,38 @@ class TestCreatePlayDigest:
         actual: bytes = lib.create_play_digest(raw)
 
         assert actual == expected
+
+
+class TestVerifyPlay:
+    @unittest.mock.patch(
+        "insights_ansible_playbook_lib.crypto.verify_gpg_signed_file",
+        return_value=unittest.mock.MagicMock(ok=False),
+    )
+    def test_requires_signature(self, _verify):
+        raw = {"name": "bad playbook", "tasks": [{"name": "a task"}]}
+
+        with pytest.raises(
+            lib.PreconditionError,
+            match="does not contain a signature",
+        ):
+            lib.verify_play(play=raw, gpg_key=b"")
+
+    @unittest.mock.patch(
+        "insights_ansible_playbook_lib.crypto.verify_gpg_signed_file",
+        return_value=unittest.mock.MagicMock(ok=False),
+    )
+    def test_requires_signature_exclude(self, _verify):
+        raw = {
+            "name": "bad playbook",
+            "vars": {"insights_signature": ""},
+            "tasks": [{"name": "a task"}],
+        }
+
+        with pytest.raises(
+            lib.PreconditionError,
+            match="does not have the key 'vars/insights_signature_exclude'",
+        ):
+            lib.verify_play(play=raw, gpg_key=b"")
 
 
 class TestVerifyPlaybook:

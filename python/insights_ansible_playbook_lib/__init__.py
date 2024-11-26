@@ -83,12 +83,6 @@ def clean_play(play: dict) -> dict:
     """Remove variable fields from the play."""
     logger.info(f"Cleaning play '{play.get('name')}'.")
 
-    if "insights_signature_exclude" not in play.get("vars", {}):
-        raise PreconditionError(
-            "The play does not have the key 'vars/insights_signature_exclude', "
-            "cannot exclude dynamic fields."
-        )
-
     fields: list[str] = play["vars"]["insights_signature_exclude"].split(",")
     result: dict = copy.deepcopy(play)
 
@@ -140,12 +134,19 @@ def verify_play(play: dict, gpg_key: bytes) -> bytes:
     play_name: str = play.get("name", "???")
     logger.info(f"Preparing to verify play '{play_name}'.")
 
-    b64_signature: str = play.get("vars", {}).get("insights_signature", "")
-    if b64_signature == "":
+    b64_signature: bytes = play.get("vars", {}).get("insights_signature", b"")
+    if b64_signature == b"":
         raise PreconditionError(f"The play '{play_name}' does not contain a signature.")
+
+    if "insights_signature_exclude" not in play.get("vars", {}):
+        raise PreconditionError(
+            "The play does not have the key 'vars/insights_signature_exclude', "
+            "cannot exclude dynamic fields."
+        )
 
     cleaned_play: dict = clean_play(play)
     serialized_play: bytes = serialize_play(cleaned_play).encode("utf-8")
+    logger.debug(f"Serialized play as {serialized_play!r}")
     digest: bytes = create_play_digest(serialized_play)
     signature: bytes = base64.b64decode(b64_signature)
 
