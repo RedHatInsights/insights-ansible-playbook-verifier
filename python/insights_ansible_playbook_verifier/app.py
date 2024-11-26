@@ -68,16 +68,32 @@ def run() -> None:
         action="store_true",
         help="Load playbook from stdin (the default)",
     )
+    parser.add_argument(
+        "--revocation-list",
+        type=pathlib.Path,
+        help=argparse.SUPPRESS,
+    )
     args = parser.parse_args()
 
     # Load public GPG key
     gpg_key: bytes = args.key.read_bytes() if args.key else get_gpg_key_from_package()
 
+    digests: set[bytes]
     # Load digests of revoked plays
-    digests: set[bytes] = lib.get_revocation_digests(
-        playbook=read_revocation_playbook_from_package(),
-        gpg_key=gpg_key,
-    )
+    if args.revocation_list is None:
+        logger.debug("Using packaged play revocation list.")
+        digests = lib.get_revocation_digests(
+            playbook=read_revocation_playbook_from_package(),
+            gpg_key=gpg_key,
+        )
+    else:
+        logger.debug(
+            f"Using custom revocation list '{args.revocation_list.absolute()}'."
+        )
+        digests = lib.get_revocation_digests(
+            playbook=args.revocation_list.read_text(),
+            gpg_key=gpg_key,
+        )
     logger.debug("Revocation digests obtained, can proceed to verification.")
 
     # Load playbook with plays to verify
