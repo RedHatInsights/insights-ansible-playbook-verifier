@@ -16,6 +16,7 @@ class TestRun:
                 key=None,
                 stdin=None,
                 playbook=f"{PLAYBOOKS}/document-from-hell.yml",
+                revocation_list=None,
             )
         ),
     )
