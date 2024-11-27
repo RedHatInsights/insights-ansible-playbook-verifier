@@ -1,0 +1,5 @@
+- name: "Minimal play"
+  hosts: "localhost"
+  tasks:
+    - ansible.builtin.debug:
+        - msg: "Debug message"
