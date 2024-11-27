@@ -267,3 +267,33 @@ def verify_gpg_signed_file(
         logger.error(f"Signature verification of '{file}' failed.")
 
     return result
+
+
+def sign_file(file: pathlib.Path, key: pathlib.Path) -> GPGCommandResult:
+    """
+    Sign a file using GPG.
+
+    :param file: File to be signed.
+    :param key: Path to the private GPG key on the filesystem.
+
+    :return: Evaluated GPG command.
+    """
+    if not file.is_file():
+        logger.debug(f"Cannot sign file '{file}', file does not exist.")
+        raise FileNotFoundError(f"File '{file}' not found")
+
+    if not key.is_file():
+        logger.debug(f"Cannot sign file '{file}', key does not exist.")
+        raise FileNotFoundError(f"Key '{key}' not found")
+
+    gpg = GPGCommand(command=["--detach-sign", "--armor", str(file)], key=key)
+
+    logger.debug(f"Starting GPG signing process for '{file}'.")
+    result: GPGCommandResult = gpg.evaluate()
+
+    if result.ok:
+        logger.debug(f"File '{file}' was signed.")
+    else:
+        logger.error(f"File '{file}' could not be signed.")
+
+    return result
