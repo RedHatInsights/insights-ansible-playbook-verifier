@@ -198,12 +198,20 @@ Strings are quoted when serialized; the type of quoting depends on which quote c
 - a string with only double quote characters: it is quoted with single quotes, and the double quote characters are left untouched
 - a string with both single quote and double quote characters: it is quoted with single quotes, the single quote characters are `\`-escaped (`\'`), and the double quote characters are left untouched
 
+Special characters are escaped but do not affect the quoting rules:
+- a string with a backslash character: each backslash character (`\`) is escaped as `\\`
+- a string with a newline character: each newline character (`\n`) is escaped as `\\n`
+- a string with a tab character: each tab character (`\t`) is escaped as `\\t`
+
 | string | serialization |
 -------- | ------------- |
 | `no quote` | `'no quote'` |
 | `single'quote` | `"single'quote"` |
 | `double"quote` | `'double"quote'` |
 | `both"'quotes` | `'both"\'quotes'` |
+| `\backslash` | `'\\backslash'` |
+| `new\nline` | `'new\\nline'` |
+| `tab\tchar` | `'tab\\tchar'` |
 
 <details>
 

@@ -1,0 +1,26 @@
+- name: Set the LoginGraceTime with a regex and file mode to 0600
+  hosts: localhost
+  become: true
+  vars:
+    insights_signature_exclude: /hosts,/vars/insights_signature
+  tasks:
+    - ticket: CCT-1065
+      file:
+        regexp: '(?i)^\s*LoginGraceTime'
+        mode: 0600
+
+
+- name: Test string with quotes and special characters
+  hosts: localhost
+  become: true
+  vars:
+    insights_signature_exclude: /hosts,/vars/insights_signature
+  tasks:
+    - ticket: CCT-1065
+      value: !!str >
+        This_string_contains_special_characters,
+        single'quote, double"quote, both'"quotes,
+        backslashes\\need to be\\\\escaped!\\
+        Newlines?\nYep, they stay.
+        Tabs\t	too!
+        ~End~
