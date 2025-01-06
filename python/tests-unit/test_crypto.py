@@ -89,7 +89,7 @@ def test_valid_signature():
         signature=pathlib.Path(home) / "file.txt.asc",
         key=pathlib.Path(home) / "key.public.gpg",
     )
-    shutil.rmtree(home)
+    shutil.rmtree(home, ignore_errors=True)
 
     # Verify results
     assert True is result.ok
@@ -120,7 +120,7 @@ def test_invalid_signature():
         signature=pathlib.Path(home) / "file.txt.asc",
         key=pathlib.Path(home) / "key.public.gpg",
     )
-    shutil.rmtree(home)
+    shutil.rmtree(home, ignore_errors=True)
 
     # Verify results
     assert not result.ok
@@ -179,7 +179,7 @@ def test_missing_public_key():
         signature=pathlib.Path(home) / "file.txt.asc",
         key=pathlib.Path(home) / "key.public.gpg",
     )
-    shutil.rmtree(home)
+    shutil.rmtree(home, ignore_errors=True)
 
     # Verify results
     assert not result.ok
@@ -210,7 +210,7 @@ def test_invalid_public_key():
         signature=pathlib.Path(home) / "file.txt.asc",
         key=pathlib.Path(home) / "key.public.gpg",
     )
-    shutil.rmtree(home)
+    shutil.rmtree(home, ignore_errors=True)
 
     # Verify results
     assert not result.ok
@@ -266,4 +266,4 @@ def test_missing_signature_file():
     assert os.path.isfile(pathlib.Path(home) / "file.txt")
     assert not os.path.isfile(pathlib.Path(home) / "file.txt.asc")
 
-    shutil.rmtree(home)
+    shutil.rmtree(home, ignore_errors=True)
