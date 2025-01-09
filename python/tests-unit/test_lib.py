@@ -38,8 +38,8 @@ class TestParsePlaybook:
         assert actual == expected
 
     def test_integers(self):
-        raw = "- [1, 2, 3]"
-        expected = [[1, 2, 3]]
+        raw = "- [1, 2, 3, 0b1101]"
+        expected = [[1, 2, 3, 13]]
 
         actual = lib.parse_playbook(raw)
 

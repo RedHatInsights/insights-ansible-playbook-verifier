@@ -21,9 +21,11 @@ class CustomSafeConstructor(yaml.constructor.SafeConstructor):
 
     def construct_yaml_int(self, node: "yaml.ScalarNode"):  # type: ignore
         value = self.construct_scalar(node)
-        if ":" not in str(value):
+        if ":" in str(value):
+            return value
+        if value.lstrip("-+").startswith(("0b", "0o", "0x")):
             return super().construct_yaml_int(node)
-        return value
+        return int(value)
 
 
 class Loader(
@@ -87,7 +89,20 @@ class Serializer:
         # single'quote  "single'quote"
         # double"quote  'double"quote'
         # both"'quotes  'both"\'quotes'
+        # \backslash    '\\backslash'
+        # new\nline     'new\\nline'
+        # tab\tchar     'tab\\tchar'
 
+        special_chars: dict[str, str] = {
+            "\\": "\\\\",
+            "\n": "\\n",
+            "\t": "\\t",
+        }
+        escaped_string: str = ""
+        for char in value:
+            escaped_string += special_chars.get(char, char)
+
+        value = escaped_string
         quote: str = "'"
         if "'" in value:
             if '"' not in value:
