@@ -68,6 +68,8 @@ class Serializer:
 
     @classmethod
     def _dict(cls, source: dict) -> str:
+        if not source:
+            return "ordereddict()"
         result = "ordereddict(["
         result += ", ".join(
             "('{key}', {value})".format(key=k, value=cls._obj(v))
