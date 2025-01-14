@@ -188,7 +188,7 @@ To hash the playbook, we have to serialize it first.
 
 For historical reasons, the serialization format is dictated by `ruamel.yaml`'s loader type `rt` (round-trip) and Python's string serialization logic for lists, basic data types and `collections.OrderedDict`.
 
-Map has to be serialized into `ordereddict([...])`, where its keys and values serialize into list of key-value tuples (`('key', 'value')`).
+Map has to be serialized into `ordereddict([...])`, where its keys and values serialize into list of key-value tuples (`('key', 'value')`). An empty map is serialized into `ordereddict()`.
 
 Booleans are only serialized into `True`/`False` if they have been declared as `true`/`false`; string `yes` is kept as string value `'yes'` and so on.
 

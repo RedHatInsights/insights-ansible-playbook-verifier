@@ -12,6 +12,12 @@ class TestPlaybookSerializer:
         expected = "['a', 'b']"
         assert result == expected
 
+    def test_dict_empty(self):
+        source = {}
+        result = serialization.Serializer._dict(source)
+        expected = "ordereddict()"
+        assert result == expected
+
     def test_dict_empty_value(self):
         source = {"a": None}
         result = serialization.Serializer._dict(source)
