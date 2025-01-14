@@ -64,7 +64,7 @@ class Serializer:
         if isinstance(value, str):
             return cls._str(value)
         logger.debug(f"Value type unknown: {value} {type(value).__name__}")
-        return f"'{value}'"
+        return f"{value}"
 
     @classmethod
     def _dict(cls, source: dict) -> str:
