@@ -192,6 +192,8 @@ Map has to be serialized into `ordereddict([...])`, where its keys and values se
 
 Booleans are only serialized into `True`/`False` if they have been declared as `true`/`false`; string `yes` is kept as string value `'yes'` and so on.
 
+Empty values are serialized into `None`.
+
 Strings are quoted when serialized; the type of quoting depends on which quote characters (single and double) are present in a string:
 - a string with no quote characters: it is quoted with single quotes
 - a string with only single quote characters: it is quoted with double quotes, and the single quote characters are left untouched
