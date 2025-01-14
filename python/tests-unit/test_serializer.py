@@ -49,6 +49,9 @@ class TestPlaybookSerializer:
             ("single'quote", '''"single'quote"'''),
             ('double"quote', """'double"quote'"""),
             ("both\"'quotes", r"""'both"\'quotes'"""),
+            ("\\backslash", "'\\\\backslash'"),
+            ("new\nline", "'new\\nline'"),
+            ("tab\tchar", "'tab\\tchar'"),
         ],
     )
     def test_strings(self, source, expected):
