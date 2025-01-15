@@ -15,6 +15,7 @@ PLAYBOOK_DIRECTORY = pathlib.Path(__file__).parents[2].absolute() / "data" / "pl
         "insights_remove",
         "document-from-hell",
         "unicode",
+        "bugs",
     ],
 )
 def test_official_playbook(filename: str):
