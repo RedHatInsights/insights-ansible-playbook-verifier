@@ -1,0 +1,71 @@
+name: Regression test against insights-core
+
+on:
+  pull_request:
+    paths:
+      - "data/**"
+      - "python/**"
+
+jobs:
+  centos-stream-9:
+    runs-on: "ubuntu-latest"
+    container:
+      image: "quay.io/centos/centos:stream9"
+
+    steps:
+      # We need to replace the GPG keys included in insights-core with our own keys.
+      # For that, we need to:
+      # - download Insights Core
+      # - generate GPG keys
+      # - replace the public key in Core
+      # - sign list of revoked plays and replace it in Core
+      # - sign own playbook
+      - name: "Install build requirements"
+        run: |
+          dnf --setopt install_weak_deps=False install -y python3-pip gpg make git-core
+
+      - name: "Checkout the repository"
+        uses: actions/checkout@v4
+
+      - name: "Install as a Python package"
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install .
+
+      - name: "Install insights-client"
+        run: |
+          curl https://copr.fedorainfracloud.org/coprs/g/yggdrasil/latest/repo/centos-stream-9/group_yggdrasil-latest-centos-stream-9.repo \
+            -o /etc/yum.repos.d/copr.repo
+          dnf install -y insights-client
+
+      - name: "Download Insights Core"
+        uses: actions/checkout@v4
+        with:
+          repository: RedHatInsights/insights-core
+          path: insights-core
+
+      - name: "Generate and set up GPG keys"
+        run: |
+          python3 -m insights_ansible_playbook_lib._keygen --directory .
+          cp -f key.public.gpg insights-core/insights/client/apps/ansible/playbook_verifier/public.gpg
+
+      - name: "Sign revocation list and the playbook"
+        run: |
+          cat > ./revoked.yaml << EOF
+          - name: "Revoked plays"
+            revoked_playbooks:
+            - name: example_play_that_had_to_be_revoked.yml
+              hash: 40a6e9af448208759bc4ef59b6c678227aae9b3f6291c74a4a8767eefc0a401f
+          EOF
+
+          insights-ansible-playbook-signer --key ./key.private.gpg --debug \
+            --playbook revoked.yaml --revocation-list > insights-core/insights/revoked_playbooks.yaml
+
+          insights-ansible-playbook-signer --key ./key.private.gpg --debug \
+            --playbook data/playbooks/document-from-hell.yml > playbook.yml
+
+      - name: "Run sanity check"
+        run: |
+          cat playbook.yml | EGG=./insights-core BYPASS_GPG=True insights-client \
+            --offline --verbose --no-gpg --payload noop --content-type noop \
+            -m insights.client.apps.ansible.playbook_verifier --verbose
