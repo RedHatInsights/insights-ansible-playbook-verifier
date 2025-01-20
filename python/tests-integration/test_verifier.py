@@ -1,7 +1,6 @@
 import os
 import pathlib
 import subprocess
-import sys
 
 import pytest
 
@@ -24,9 +23,6 @@ def test_official_playbook(filename: str):
     In this test, the official playbooks are verified against the GPG key
     the application ships.
     """
-    if filename == "unicode" and sys.version_info >= (3, 12):
-        raise pytest.xfail("CCT-644")
-
     playbook_content: str = (PLAYBOOK_DIRECTORY / f"{filename}.yml").read_text()
 
     result = subprocess.run(

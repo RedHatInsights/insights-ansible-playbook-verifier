@@ -94,7 +94,7 @@ Non-ASCII characters SHOULD NOT be used unless absolutely necessary.
 # This playbook demonstrates how serialization happens for various unicode
 # characters, such as emojis.
 ---
-- name: The legend says one day Unicode will just work
+- name: Playbook with various Unicode characters
   hosts: localhost
   become: yes
   vars:
@@ -109,6 +109,8 @@ Non-ASCII characters SHOULD NOT be used unless absolutely necessary.
           - /电脑/汉堡包
           - /אני פה/הוא אכל את העוגה/
           - /تَكَاتَبْنَا/كيف حالك؟/
+          - /რამდენიმე/ქართული/
+          - /κάποιο/ελληνικό/
 
     - name: Linux supports emojis in paths. Now you know.
       ansible.builtin.find:
@@ -116,18 +118,26 @@ Non-ASCII characters SHOULD NOT be used unless absolutely necessary.
           - /🍏/👨🏼‍🚀/
           - /usr/bin/🙀
           - /var/lib/ඞ/
+
+    - name: Various special characters
+      ansible.builtin.find:
+        paths:
+          - /👨‍👩‍👦/👨‍🌾/👨‍🦰/
+          - /ണ്‍/ශ්‍ර/क्‍ष/
+          - /text‌joined‌by‌zero‌width‌non‌joiner/
+          - /text​joined​by​zero​width​space/
 ```
 
 Python 3:
 
 ```
-ordereddict([('name', 'The legend says one day Unicode will just work'), ('become', 'yes'), ('vars', ordereddict([('insights_signature_exclude', '/hosts,/vars/insights_signature')])), ('tasks', [ordereddict([('name', 'Not all languages are as boring as English /s'), ('ansible.builtin.find', ordereddict([('paths', ['/t\xc5\x99\xc3\xad\xc5\xa1tiv\xc3\xa1/hru\xc5\xa1e\xc5\x88', '/\xe3\x81\x94\xe9\xa3\xaf\xe3\x81\x8c\xe7\x86\xb1\xe3\x81\x84\xe3\x80\x82/\xe5\xbd\xbc\xe3\x81\xaf\xe5\xa4\x89\xe3\x81\xa0\xe3\x80\x82', '/\xe7\x94\xb5\xe8\x84\x91/\xe6\xb1\x89\xe5\xa0\xa1\xe5\x8c\x85', '/\xd7\x90\xd7\xa0\xd7\x99 \xd7\xa4\xd7\x94/\xd7\x94\xd7\x95\xd7\x90 \xd7\x90\xd7\x9b\xd7\x9c \xd7\x90\xd7\xaa \xd7\x94\xd7\xa2\xd7\x95\xd7\x92\xd7\x94/', '/\xd8\xaa\xd9\x8e\xd9\x83\xd9\x8e\xd8\xa7\xd8\xaa\xd9\x8e\xd8\xa8\xd9\x92\xd9\x86\xd9\x8e\xd8\xa7/\xd9\x83\xd9\x8a\xd9\x81 \xd8\xad\xd8\xa7\xd9\x84\xd9\x83\xd8\x9f/'])]))]), ordereddict([('name', 'Linux supports emojis in paths. Now you know.'), ('ansible.builtin.find', ordereddict([('paths', ['/\xf0\x9f\x8d\x8f/\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\\u200d\xf0\x9f\x9a\x80/', '/usr/bin/\xf0\x9f\x99\x80', '/var/lib/\xe0\xb6\x9e/'])]))])])])
+ordereddict([('name', 'Playbook with various Unicode characters'), ('become', 'yes'), ('vars', ordereddict([('insights_signature_exclude', '/hosts,/vars/insights_signature')])), ('tasks', [ordereddict([('name', 'Not all languages are as boring as English /s'), ('ansible.builtin.find', ordereddict([('paths', ['/t\xc5\x99\xc3\xad\xc5\xa1tiv\xc3\xa1/hru\xc5\xa1e\xc5\x88', '/\xe3\x81\x94\xe9\xa3\xaf\xe3\x81\x8c\xe7\x86\xb1\xe3\x81\x84\xe3\x80\x82/\xe5\xbd\xbc\xe3\x81\xaf\xe5\xa4\x89\xe3\x81\xa0\xe3\x80\x82', '/\xe7\x94\xb5\xe8\x84\x91/\xe6\xb1\x89\xe5\xa0\xa1\xe5\x8c\x85', '/\xd7\x90\xd7\xa0\xd7\x99 \xd7\xa4\xd7\x94/\xd7\x94\xd7\x95\xd7\x90 \xd7\x90\xd7\x9b\xd7\x9c \xd7\x90\xd7\xaa \xd7\x94\xd7\xa2\xd7\x95\xd7\x92\xd7\x94/', '/\xd8\xaa\xd9\x8e\xd9\x83\xd9\x8e\xd8\xa7\xd8\xaa\xd9\x8e\xd8\xa8\xd9\x92\xd9\x86\xd9\x8e\xd8\xa7/\xd9\x83\xd9\x8a\xd9\x81 \xd8\xad\xd8\xa7\xd9\x84\xd9\x83\xd8\x9f/', '/\xe1\x83\xa0\xe1\x83\x90\xe1\x83\x9b\xe1\x83\x93\xe1\x83\x94\xe1\x83\x9c\xe1\x83\x98\xe1\x83\x9b\xe1\x83\x94/\xe1\x83\xa5\xe1\x83\x90\xe1\x83\xa0\xe1\x83\x97\xe1\x83\xa3\xe1\x83\x9a\xe1\x83\x98/', '/\xce\xba\xce\xac\xcf\x80\xce\xbf\xce\xb9\xce\xbf/\xce\xb5\xce\xbb\xce\xbb\xce\xb7\xce\xbd\xce\xb9\xce\xba\xcf\x8c/'])]))]), ordereddict([('name', 'Linux supports emojis in paths. Now you know.'), ('ansible.builtin.find', ordereddict([('paths', ['/\xf0\x9f\x8d\x8f/\xf0\x9f\x91\xa8\xf0\x9f\x8f\xbc\\u200d\xf0\x9f\x9a\x80/', '/usr/bin/\xf0\x9f\x99\x80', '/var/lib/\xe0\xb6\x9e/'])]))]), ordereddict([('name', 'Various special characters'), ('ansible.builtin.find', ordereddict([('paths', ['/\xf0\x9f\x91\xa8\\u200d\xf0\x9f\x91\xa9\\u200d\xf0\x9f\x91\xa6/\xf0\x9f\x91\xa8\\u200d\xf0\x9f\x8c\xbe/\xf0\x9f\x91\xa8\\u200d\xf0\x9f\xa6\xb0/', '/\xe0\xb4\xa3\xe0\xb5\x8d\\u200d/\xe0\xb7\x81\xe0\xb7\x8a\\u200d\xe0\xb6\xbb/\xe0\xa4\x95\xe0\xa5\x8d\\u200d\xe0\xa4\xb7/', '/text\\u200cjoined\\u200cby\\u200czero\\u200cwidth\\u200cnon\\u200cjoiner/', '/text\\u200bjoined\\u200bby\\u200bzero\\u200bwidth\\u200bspace/'])]))])])])
 ```
 
 Python 2:
 
 ```
-ordereddict([('name', 'The legend says one day Unicode will just work'), ('become', 'yes'), ('vars', ordereddict([('insights_signature_exclude', '/hosts,/vars/insights_signature')])), ('tasks', [ordereddict([('name', 'Not all languages are as boring as English /s'), ('ansible.builtin.find', ordereddict([('paths', ['/ttiv/hrue', '//', '//', '/ /   /', '// /'])]))]), ordereddict([('name', 'Linux supports emojis in paths. Now you know.'), ('ansible.builtin.find', ordereddict([('paths', ['///', '/usr/bin/', '/var/lib//'])]))])])])
+ordereddict([('name', 'Playbook with various Unicode characters'), ('become', 'yes'), ('vars', ordereddict([('insights_signature_exclude', '/hosts,/vars/insights_signature')])), ('tasks', [ordereddict([('name', 'Not all languages are as boring as English /s'), ('ansible.builtin.find', ordereddict([('paths', ['/ttiv/hrue', '//', '//', '/ /   /', '// /', '///', '///'])]))]), ordereddict([('name', 'Linux supports emojis in paths. Now you know.'), ('ansible.builtin.find', ordereddict([('paths', ['///', '/usr/bin/', '/var/lib//'])]))]), ordereddict([('name', 'Various special characters'), ('ansible.builtin.find', ordereddict([('paths', ['////', '////', '/textjoinedbyzerowidthnonjoiner/', '/textjoinedbyzerowidthspace/'])]))])])])
 ```
 
 </details>

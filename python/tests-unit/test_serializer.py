@@ -1,5 +1,3 @@
-import sys
-
 import pytest
 
 from insights_ansible_playbook_lib import serialization
@@ -70,12 +68,15 @@ class TestPlaybookSerializer:
         result = serialization.Serializer._str(source)
         assert result == expected
 
-    def test_strings_emoji_zwj(self):
-        if sys.version_info >= (3, 12):
-            raise pytest.xfail("CCT-644")
-
-        source = "👨🏼‍🚀"
+    @pytest.mark.parametrize(
+        "source,expected",
+        [
+            ("zw​space", "'zw\\u200bspace'"),
+            ("zw‌nonjoiner", "'zw\\u200cnonjoiner'"),
+            ("👨🏼‍🚀", "'👨🏼\\u200d🚀'"),
+        ],
+        ids=["zero-width space", "zero-width non-joiner", "zero-width joiner"],
+    )
+    def test_strings_unicode(self, source, expected):
         result = serialization.Serializer._str(source)
-
-        expected = "'👨🏼\u200d🚀'"
         assert result == expected

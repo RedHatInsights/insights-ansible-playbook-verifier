@@ -99,6 +99,9 @@ class Serializer:
             "\\": "\\\\",
             "\n": "\\n",
             "\t": "\\t",
+            "\u200b": "\\u200b",  # Zero-width space
+            "\u200c": "\\u200c",  # Zero-width non-joiner
+            "\u200d": "\\u200d",  # Zero-width joiner
         }
         escaped_string: str = ""
         for char in value:
