@@ -14,6 +14,7 @@ import yaml
 
 import insights_ansible_playbook_lib as lib
 from insights_ansible_playbook_lib import crypto
+from insights_ansible_playbook_lib.serialization import CustomYamlDumper
 from insights_ansible_playbook_verifier.app import get_version_from_package
 
 logger = logging.getLogger(__name__)
@@ -218,6 +219,9 @@ def run() -> None:
         help="Load playbook from stdin (the default)",
     )
     args = parser.parse_args()
+
+    # Configure YAML to handle None values
+    yaml.add_representer(type(None), CustomYamlDumper.represent_none)
 
     # Load playbook to sign
     raw_playbook: str = ""
