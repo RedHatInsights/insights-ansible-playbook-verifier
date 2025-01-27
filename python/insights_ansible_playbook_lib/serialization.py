@@ -1,5 +1,6 @@
 import logging
 import typing
+import yaml
 
 import yaml.parser
 import yaml.scanner
@@ -26,6 +27,11 @@ class CustomSafeConstructor(yaml.constructor.SafeConstructor):
         if value.lstrip("-+").startswith(("0b", "0o", "0x")):
             return super().construct_yaml_int(node)
         return int(value)
+
+
+class CustomYamlDumper(yaml.Dumper):
+    def represent_none(self: yaml.Dumper, data: None) -> yaml.ScalarNode:
+        return self.represent_scalar("tag:yaml.org,2002:null", "")
 
 
 class Loader(

@@ -93,6 +93,7 @@ def ephemeral_gpg_keys(tmp_path: pathlib.Path) -> None:
         # official production playbooks
         "playbooks/insights_remove.yml",
         # custom playbooks signed by official Red Hat key
+        "playbooks/bugs.yml",
         "playbooks/document-from-hell.yml",
         # unsigned playbooks
         "playbooks-unsigned/sample.yml",

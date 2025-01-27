@@ -1,4 +1,5 @@
 import pytest
+import yaml
 
 from insights_ansible_playbook_lib import serialization
 
@@ -80,3 +81,17 @@ class TestPlaybookSerializer:
     def test_strings_unicode(self, source, expected):
         result = serialization.Serializer._str(source)
         assert result == expected
+
+
+class TestYamlDumper:
+    def test_represent_none(self):
+        """Test that None is represented as an empty string in YAML."""
+        yaml_dumper: yaml.Dumper = yaml.Dumper
+        yaml_dumper.add_representer(
+            type(None), serialization.CustomYamlDumper.represent_none
+        )
+
+        actual: str = yaml.dump({"key": None}, Dumper=serialization.CustomYamlDumper)
+        expected: str = "key:\n"
+
+        assert actual == expected
