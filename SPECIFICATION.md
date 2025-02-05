@@ -31,6 +31,10 @@ The following values MUST stay as strings: `y`, `Y`, `yes`, `Yes`, `YES`, `on`, 
 
 When serialized into string, `true` MUST be formatted as `True`, `false` as `False`.
 
+## Integers
+
+Unless prefixed with explicit base (`0b`, `0o`, `0x`), the leading zeros should be stripped, to prevent them being interpreted as base-8.
+
 ## Unquoted YAML aliases
 
 The document MUST NOT contain string-like values that could parse as aliases.
@@ -202,18 +206,21 @@ Map has to be serialized into `ordereddict([...])`, where its keys and values se
 
 Booleans are only serialized into `True`/`False` if they have been declared as `true`/`false`; string `yes` is kept as string value `'yes'` and so on.
 
-Empty values are serialized into `None`.
+Empty values are serialized into `None`. Empty maps do not emit any characters.
+
+Special characters are escaped with double backslash:
+- a backslash: `\\`
+- a newline: `\\n`
+- a tab: `\\t`
+- a zero-width space: `\\200b`
+- a zero-width non-joiner: `\\200c`
+- a zero-width joiner: `\\200d`
 
 Strings are quoted when serialized; the type of quoting depends on which quote characters (single and double) are present in a string:
 - a string with no quote characters: it is quoted with single quotes
 - a string with only single quote characters: it is quoted with double quotes, and the single quote characters are left untouched
 - a string with only double quote characters: it is quoted with single quotes, and the double quote characters are left untouched
 - a string with both single quote and double quote characters: it is quoted with single quotes, the single quote characters are `\`-escaped (`\'`), and the double quote characters are left untouched
-
-Special characters are escaped but do not affect the quoting rules:
-- a string with a backslash character: each backslash character (`\`) is escaped as `\\`
-- a string with a newline character: each newline character (`\n`) is escaped as `\\n`
-- a string with a tab character: each tab character (`\t`) is escaped as `\\t`
 
 | string | serialization |
 -------- | ------------- |
