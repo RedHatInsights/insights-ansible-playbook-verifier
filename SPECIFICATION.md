@@ -13,7 +13,7 @@ This document describes the exact format required by the Ansible playbook verifi
       base64 binary blob containing the embedded GPG signature
   tasks:
     - name: Display debug message
-    - ansible.builtin.debug:
+      ansible.builtin.debug:
         msg: The signed playbook says hello!
 ```
 
@@ -82,7 +82,7 @@ serve:
 
 ## Unicode
 
-The reference Python 2.7 implementation ignores all non-ASCII characters, and unicode is only supported when it is run with Python 3.
+The reference Python 2.7 implementation ignores all non-ASCII characters, and Unicode is only supported when it is run with Python 3.
 
 If the playbook targets systems which verify the playbooks using the reference Python 2 implementation, characters outside of ASCII range MUST NOT be used.
 
