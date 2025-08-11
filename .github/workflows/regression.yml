@@ -25,7 +25,7 @@ jobs:
           dnf --setopt install_weak_deps=False install -y python3-pip gpg make git-core
 
       - name: "Checkout the repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Install as a Python package"
         run: |
@@ -39,7 +39,7 @@ jobs:
           dnf install -y insights-client
 
       - name: "Download Insights Core"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: RedHatInsights/insights-core
           path: insights-core
