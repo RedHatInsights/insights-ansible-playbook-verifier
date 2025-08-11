@@ -16,7 +16,7 @@ jobs:
           git config --global --add safe.directory '*'
 
       - name: "Checkout the repository"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: "Run gitleaks"
         run: |
